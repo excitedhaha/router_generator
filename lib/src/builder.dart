@@ -18,7 +18,7 @@ Builder routerBuilder(BuilderOptions options) {
       generatedExtension: ROUTER_EXTENSION);
 }
 
-const typeChecker = const TypeChecker.fromRuntime(Router);
+const routerChecker = const TypeChecker.fromRuntime(Router);
 
 Builder routerCombiningBuilder(BuilderOptions options) =>
     const RouterCombiningBuilder();

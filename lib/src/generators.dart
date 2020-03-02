@@ -3,9 +3,9 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'annotations.dart';
+import 'builder.dart';
 
 const _paramChecker = const TypeChecker.fromRuntime(RouterParam);
-const _routerChecker = const TypeChecker.fromRuntime(Router);
 
 class Arg {
   final String type;
@@ -18,23 +18,21 @@ class Arg {
 
 class InjectGenerator extends GeneratorForAnnotation<Inject> {
   @override
-  String generateForAnnotatedElement(Element element, ConstantReader annotation,
-      BuildStep buildStep) {
+  String generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) {
     var className = element.name;
     ClassElement e = element as ClassElement;
     String pageName;
 
     // 验证类型，获取页面名
-    var superClz = e.supertype.element;
-    if (superClz.source.fullName == '/flutter/lib/src/widgets/framework.dart' &&
-        superClz.name == 'State') {
+    if (isClassExtendsState(e)) {
       var typeArguments = e.supertype.typeArguments;
       if (typeArguments.isEmpty) {
         throw Exception('Injected State class must assign the Page Widget');
       }
       var pageElement = typeArguments[0].element;
-      if (_routerChecker.hasAnnotationOf(pageElement)) {
-        var routerAnnotation = _routerChecker.firstAnnotationOf(pageElement);
+      if (routerChecker.hasAnnotationOf(pageElement)) {
+        var routerAnnotation = routerChecker.firstAnnotationOf(pageElement);
         pageName = routerAnnotation.getField('pageName').toStringValue();
       } else {
         throw Exception(
@@ -104,13 +102,13 @@ class InjectGenerator extends GeneratorForAnnotation<Inject> {
     // 处理import
     if (needConvert) {
       codes = '''import 'dart:convert';
-          ''' + codes;
+          ''' +
+          codes;
     }
     for (var import in imports.toSet()) {
-      codes =
-          '''import '${import.split('/lib/')[1]}';
+      codes = '''import '${import.split('/lib/')[1]}';
               ''' +
-              codes;
+          codes;
     }
     codes += '''
     }
@@ -119,16 +117,14 @@ class InjectGenerator extends GeneratorForAnnotation<Inject> {
     // 生成参数列表的方法
     var requiredArgs = args.where((arg) => arg.required);
     var requiredArgsStr =
-    requiredArgs.map((arg) => '${arg.type} ${arg.fieldName}').join(',');
+        requiredArgs.map((arg) => '${arg.type} ${arg.fieldName}').join(',');
     var optionalArgs = args.where((arg) => !arg.required);
     var optionalArgsStr =
-    optionalArgs.map((arg) => '${arg.type} ${arg.fieldName}').join(',');
+        optionalArgs.map((arg) => '${arg.type} ${arg.fieldName}').join(',');
     codes += '''
-    Map<String, dynamic> createRouteArgs($requiredArgsStr${requiredArgsStr
-        .isNotEmpty ? ',' : ''}{$optionalArgsStr}) {
+    Map<String, dynamic> createRouteArgs($requiredArgsStr${requiredArgsStr.isNotEmpty ? ',' : ''}{$optionalArgsStr}) {
       var args = <String, dynamic>{};
-      ${requiredArgs.map((arg) => "args['${arg.key}']=${arg.fieldName};").join(
-        '\n')}
+      ${requiredArgs.map((arg) => "args['${arg.key}']=${arg.fieldName};").join('\n')}
       ${optionalArgs.map((arg) => '''
     if(${arg.fieldName} != null){
       args['${arg.key}']=${arg.fieldName};
@@ -139,18 +135,35 @@ class InjectGenerator extends GeneratorForAnnotation<Inject> {
     ''';
     return codes;
   }
+
+  /// 类是否继承自State
+  bool isClassExtendsState(ClassElement element) {
+    var superType = element.supertype;
+    while (superType != null) {
+      element = superType.element;
+      if (isStateClass(element)) {
+        return true;
+      } else {
+        superType = element.supertype;
+      }
+    }
+    return false;
+  }
+
+  bool isStateClass(ClassElement element) {
+    return element.source.fullName ==
+            '/flutter/lib/src/widgets/framework.dart' &&
+        element.name == 'State';
+  }
 }
 
 class RouterGenerator extends GeneratorForAnnotation<Router> {
   @override
-  dynamic generateForAnnotatedElement(Element element,
-      ConstantReader annotation, BuildStep buildStep) {
-    var pageName = annotation
-        .read('pageName')
-        .stringValue;
+  dynamic generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) {
+    var pageName = annotation.read('pageName').stringValue;
     var className = element.name;
-    var import =
-        "import '${element.source.fullName.split('/lib/')[1]}';";
+    var import = "import '${element.source.fullName.split('/lib/')[1]}';";
     return '''
     $import
     var $pageName = '$className';
