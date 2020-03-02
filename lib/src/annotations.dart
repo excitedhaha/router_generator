@@ -16,10 +16,10 @@ class RouterParam {
 }
 
 /// annotate param field with this when use field'name as key and not required
-const routerParam = const RouterParam();
+const routerParam = RouterParam();
 
 /// The state needs to inject dependencies should annotates with [inject]
-const inject = const Inject._();
+const inject = Inject._();
 
 class Inject {
   const Inject._();

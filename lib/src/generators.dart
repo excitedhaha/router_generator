@@ -5,7 +5,7 @@ import 'package:source_gen/source_gen.dart';
 import 'annotations.dart';
 import 'builder.dart';
 
-const _paramChecker = const TypeChecker.fromRuntime(RouterParam);
+const _paramChecker = TypeChecker.fromRuntime(RouterParam);
 
 class Arg {
   final String type;
@@ -78,7 +78,7 @@ class InjectGenerator extends GeneratorForAnnotation<Inject> {
           needConvert = true;
           imports.add(fieldElement.type.element.source.fullName);
           statement = '''
-          $ifStatement ${fieldType.name}.fromJsonMap(jsonDecode($value))
+          $ifStatement ${fieldType.element.name}.fromJsonMap(jsonDecode($value))
           ''';
         }
         codes += '''
