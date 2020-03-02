@@ -1,5 +1,5 @@
 # router_generator
-###router_generator 是用于flutter路由的页面表及页面参数绑定自动生成框架
+### router_generator 是用于flutter路由的页面表及页面参数绑定自动生成框架
 ### 安装
 ```
 dev_dependencies:
