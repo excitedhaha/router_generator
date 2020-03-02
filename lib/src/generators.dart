@@ -48,7 +48,7 @@ class InjectGenerator extends GeneratorForAnnotation<Inject> {
     bool needConvert = false;
     String codes = '''
         import '$sourceName';
-        import 'package:router_generator/core.dart';
+        import 'package:router_generator/router_generator.dart';
         void injectDependencies($className state){
           var map = paramsTable['$pageName'];
         ''';

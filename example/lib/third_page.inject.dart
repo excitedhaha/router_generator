@@ -7,7 +7,7 @@
 import 'model.dart';
 import 'dart:convert';
 import 'third_page.dart';
-import 'package:router_generator/core.dart';
+import 'package:router_generator/router_generator.dart';
 
 void injectDependencies(ThirdPageState state) {
   var map = paramsTable['third'];

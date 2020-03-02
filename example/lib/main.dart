@@ -3,7 +3,7 @@ import 'package:example/model.dart';
 import 'package:example/second_page.inject.dart';
 import 'package:example/third_page.inject.dart' as third_page;
 import 'package:flutter/material.dart';
-import 'package:router_generator/core.dart';
+import 'package:router_generator/router_generator.dart';
 
 void main() => runApp(MyApp());
 

@@ -1,6 +1,6 @@
 import 'package:example/second_page.inject.dart';
 import 'package:flutter/material.dart';
-import 'package:router_generator/core.dart';
+import 'package:router_generator/router_generator.dart';
 
 @Router('second')
 class SecondPage extends StatefulWidget {

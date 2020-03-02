@@ -1,6 +1,6 @@
 import 'package:example/third_page.inject.dart';
 import 'package:flutter/material.dart';
-import 'package:router_generator/core.dart';
+import 'package:router_generator/router_generator.dart';
 
 import 'model.dart';
 
