@@ -1,0 +1,32 @@
+
+builders:
+  inject:
+    import: "package:router_generator/src/builder.dart"
+    builder_factories: ["injectBuilder"]
+    build_extensions: {".dart": [".inject.part"]}
+    auto_apply: dependents
+    build_to: source
+
+  router_combining:
+    import: "package:router_generator/src/builder.dart"
+    builder_factories: ["routerCombiningBuilder"]
+    build_extensions: {".dart": [".router_table.dart"]}
+    required_inputs: [".router"]
+    build_to: source
+
+
+  router:
+    import: "package:router_generator/src/builder.dart"
+    builder_factories: ["routerBuilder"]
+    build_extensions: {".dart": [".router"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["router_generator|router_combining"]
+
+targets:
+  $default:
+    builders:
+      router_generator|router:
+        enabled: true
+      router_generator|inject:
+        enabled: true

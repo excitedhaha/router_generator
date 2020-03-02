@@ -1,0 +1,12 @@
+name: router_generator
+description: >-
+  router_generator is a flutter library for router generation.
+version: 0.1.0
+author: JellyBean(excitedhaha) <244510504@163.com>
+homepage: https://github.com/excitedhaha/router_generator
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
+dependencies:
+  source_gen: ^0.9.4+7
