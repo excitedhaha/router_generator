@@ -1,0 +1,6 @@
+targets:
+  $default:
+    builders:
+      router_generator|router_combining:
+        options:
+          router_table_root_file: "router.dart"

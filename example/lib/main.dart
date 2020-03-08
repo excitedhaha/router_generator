@@ -1,4 +1,4 @@
-import 'package:example/main.router_table.dart';
+import 'package:example/router.router_table.dart';
 import 'package:example/model.dart';
 import 'package:example/second_page.inject.dart';
 import 'package:example/third_page.inject.dart' as third_page;

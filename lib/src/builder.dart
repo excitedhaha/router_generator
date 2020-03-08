@@ -20,11 +20,18 @@ Builder routerBuilder(BuilderOptions options) {
 
 const routerChecker = TypeChecker.fromRuntime(Router);
 
-Builder routerCombiningBuilder(BuilderOptions options) =>
-    const RouterCombiningBuilder();
+Builder routerCombiningBuilder(BuilderOptions options) {
+  print(options.config['router_table_root_file']);
+  return options.config.containsKey('router_table_root_file')
+      ? RouterCombiningBuilder(
+          router_table_root_file: options.config['router_table_root_file'])
+      : RouterCombiningBuilder();
+}
 
 class RouterCombiningBuilder implements Builder {
-  const RouterCombiningBuilder();
+  final String router_table_root_file;
+
+  const RouterCombiningBuilder({this.router_table_root_file = 'main.dart'});
 
   @override
   Map<String, List<String>> get buildExtensions => const {
@@ -33,7 +40,7 @@ class RouterCombiningBuilder implements Builder {
 
   @override
   Future build(BuildStep buildStep) async {
-    if (!buildStep.inputId.path.endsWith('main.dart')) return;
+    if (!buildStep.inputId.path.endsWith(router_table_root_file)) return;
     var pageNames = <String>[];
     final pattern = 'lib/**$ROUTER_EXTENSION';
     final assetIds = await buildStep.findAssets(Glob(pattern)).toList()
