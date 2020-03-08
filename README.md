@@ -3,7 +3,7 @@
 ### 安装
 ```
 dev_dependencies:
-  router_generator: 0.1.1
+  router_generator: ^0.1.2
   build_runner:
 ```
 
@@ -42,9 +42,19 @@ class ThirdPageState extends State<ThirdPage> {
 执行命令:`flutter packages pub run build_runner build`, 更多使用方法可参考 [build_runner](https://pub.dev/packages/build_runner)
 
 生成的若干dart文件中包含：
-
-- 页面路由表 `main.router_table.dart`
+- 页面路由表 `$root_file.router_table.dart`, 包含页面名称列表和根据页面名获取对应widget的方法，`root_file`默认为`main.dart`,可配置。
 - 页面依赖注入 `$page.inject.dart` 若干个，其中 page 是你 state所在 文件的名称，例如 `foo.dart`对应`foo.inject.dart`
+
+`router_table`的根文件默认为`main.dart`，如需更改可配置`build.yaml`:
+
+```
+targets:
+  $default:
+    builders:
+      router_generator|router_combining:
+        options:
+          router_table_root_file: "router.dart" #修改此值即可
+```
 
 ### 引用
 #### 路由生成
