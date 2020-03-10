@@ -1,4 +1,5 @@
-# router_generator is a flutter library for router generation.[中文文档](https://github.com/excitedhaha/router_generator/blob/master/README_CN.md)
+# router_generator is a flutter library for router generation.
+### [中文文档](https://github.com/excitedhaha/router_generator/blob/master/README_CN.md)
 [![pub package](https://img.shields.io/pub/v/router_generator.svg)](https://pub.dartlang.org/packages/router_generator)
 ### install
 ```
@@ -39,11 +40,11 @@ Generated dart files including：
 `main.dart` is the default root file of `router_table`file, it can be configured in `build.yaml`:
 ```
 targets:
- $default:
- builders:
- router_generator|router_combining:
- options:
- router_table_root_file: "router.dart" # modify this value 
+  $default:
+    builders:
+      router_generator|router_combining:
+        options:
+          router_table_root_file: "router.dart"
 ```
 ### Use it 
 #### GenerateRoute
